@@ -1,0 +1,35 @@
+{
+  "author": "openfishtools",
+  "name": "FishTracker Golang - 1000 Titik Max",
+  "description": "Camera tracker 1000 titik gila, export .ofts (FishTools Studio) + .kf (Keyflow). 3GB RAM optimized, GoCV + RANSAC 1.5px + Kalman. Hasil sekelas Python.",
+  "docker_images": {
+    "ghcr.io/pterodactyl/yolks:debian_go_1.21": "ghcr.io/pterodactyl/yolks:debian_go_1.21"
+  },
+  "file_denylist": [],
+  "config": {
+    "files": "{}",
+    "startup": "{\"done\": \"FishTracker Golang Server running\", \"userInteraction\": []}",
+    "logs": "{\"custom\": false, \"location\": \"logs/\"}",
+    "stop": "^C"
+  },
+  "startup": "export GOPATH=/home/container/go && export GOCACHE=/home/container/.cache/go-build && export GOMODCACHE=/home/container/go/pkg/mod && export GO111MODULE=on && mkdir -p $GOPATH $GOCACHE $GOMODCACHE && if [ ! -f ./fishtracker ]; then go mod tidy && go build -o fishtracker -ldflags=\"-s -w\" main.go && chmod +x fishtracker; fi && ./fishtracker",
+  "scripts": {
+    "installation": {
+      "container": "debian:bullseye-slim",
+      "entrypoint": "bash",
+      "script": "#!/bin/bash\napt-get update\napt-get install -y libopencv-dev libopencv-contrib-dev pkg-config git\nmkdir -p /mnt/server/templates\ncd /mnt/server\necho \"Installed OpenCV for GoCV\""
+    }
+  },
+  "variables": [
+    {
+      "default_value": "8080",
+      "description": "Port server (auto dari Pterodactyl)",
+      "env_variable": "SERVER_PORT",
+      "field_type": "text",
+      "name": "SERVER_PORT",
+      "rules": "required|integer",
+      "user_editable": true,
+      "user_viewable": true
+    }
+  ]
+}

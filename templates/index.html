@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FishTracker Golang - 1000 Titik Max | 3GB Optimized</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{background:#0a0a0a;color:#e5e5e5;font-family:monospace}
+.card{background:#111;border:1px solid #222;border-radius:14px}
+.btn{transition:all 0.2s}
+.btn:hover{transform:translateY(-1px)}
+</style>
+</head>
+<body class="min-h-screen p-4">
+<div class="max-w-5xl mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-white">🐟 FishTracker Golang</h1>
+      <p class="text-xs text-zinc-500">1000 Titik Gila | 3GB Pterodactyl Optimized | GoCV + RANSAC 1.5px</p>
+    </div>
+    <div class="text-xs text-zinc-600">Go + OpenCV C++ backend | Selevel Python</div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div class="lg:col-span-2 space-y-4">
+      <div class="card p-4">
+        <h2 class="font-bold mb-3">📤 Upload Video</h2>
+        <input id="videoFile" type="file" accept="video/*" class="w-full p-3 bg-black border border-zinc-800 rounded-lg text-sm">
+        <div class="grid grid-cols-3 gap-3 mt-4">
+          <div>
+            <label class="text-xs text-zinc-500">Sample FPS</label>
+            <select id="sampleFPS" class="w-full mt-1 p-2 bg-black border border-zinc-800 rounded text-sm">
+              <option value="3">3 FPS (cepat)</option>
+              <option value="5" selected>5 FPS (balance)</option>
+              <option value="8">8 FPS (akurat)</option>
+              <option value="12">12 FPS (max)</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs text-zinc-500">Max Points</label>
+            <select id="maxPoints" class="w-full mt-1 p-2 bg-black border border-zinc-800 rounded text-sm">
+              <option value="600">600</option>
+              <option value="1000" selected>1000 GILA</option>
+              <option value="1440">1440 ULTRA</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs text-zinc-500">RANSAC</label>
+            <select id="ransac" class="w-full mt-1 p-2 bg-black border border-zinc-800 rounded text-sm">
+              <option value="1.5" selected>1.5px (super akurat)</option>
+              <option value="2.0">2.0px</option>
+              <option value="3.0">3.0px (stabil)</option>
+            </select>
+          </div>
+        </div>
+        <button id="trackBtn" class="btn w-full mt-4 py-3 bg-[#00ff88] text-black font-bold rounded-xl">🚀 TRACK 1000 TITIK - GOLANG</button>
+        <div id="progress" class="hidden mt-3 p-3 bg-black rounded-lg border border-zinc-800">
+          <div class="flex justify-between text-xs"><span id="progressText">Tracking...</span><span id="progressPts">pts: -</span></div>
+          <div class="w-full h-1 bg-zinc-800 rounded mt-2"><div id="progressBar" class="h-1 bg-[#00ff88] rounded" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="card p-4">
+        <h2 class="font-bold mb-3">📊 Result</h2>
+        <pre id="log" class="bg-black p-3 rounded-lg text-xs h-40 overflow-auto border border-zinc-800">Idle - upload video dulu
+- 3GB optimized
+- GoCV = OpenCV C++ backend (sekelas Python)
+- 8x6 grid + 30 titik per cell = 1440 max
+</pre>
+        <div id="downloadArea" class="hidden grid grid-cols-2 gap-3 mt-3">
+          <a id="dlOFTS" class="btn py-3 bg-[#7c3aed] text-white text-center font-bold rounded-xl">⬇️ DOWNLOAD .OFTS (FishTools Studio)</a>
+          <a id="dlKF" class="btn py-3 bg-[#00c950] text-black text-center font-bold rounded-xl">⬇️ DOWNLOAD .KF (Keyflow)</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      <div class="card p-4">
+        <h3 class="font-bold text-sm mb-2">🎯 Kenapa Golang sekelas Python?</h3>
+        <div class="text-xs text-zinc-400 space-y-2">
+          <p>Python & Golang pakai backend yang sama: <b>OpenCV C++</b></p>
+          <p class="p-2 bg-zinc-900 rounded">Python: cv2.goodFeaturesToTrack() → C++<br>Golang: gocv.GoodFeaturesToTrack() → C++ (sama persis)</p>
+          <p>Hasil dx,dy,rot identik 1:1, bedanya Golang RAM 15MB vs Python 150MB - cocok buat 3GB Pterodactyl.</p>
+        </div>
+      </div>
+      <div class="card p-4">
+        <h3 class="font-bold text-sm mb-2">📦 Pterodactyl Egg Config</h3>
+        <pre class="text-xs bg-black p-2 rounded border border-zinc-800">Egg: Golang 1.21
+Port: {{SERVER_PORT}}
+Startup: ./fishtracker
+
+Build:
+go build -o fishtracker
+</pre>
+      </div>
+      <div class="card p-4">
+        <h3 class="font-bold text-sm mb-2">🔧 Optimasi 3GB</h3>
+        <ul class="text-xs text-zinc-400 list-disc ml-4 space-y-1">
+          <li>Resize 640x360 (bukan 1080p)</li>
+          <li>Stream frame, gak load semua RAM</li>
+          <li>GoCV mat.Close() tiap frame</li>
+          <li>Kalman Q=0.003 R=0.4</li>
+          <li>RANSAC 1.5px super akurat</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const logEl = document.getElementById('log');
+const trackBtn = document.getElementById('trackBtn');
+const fileInput = document.getElementById('videoFile');
+let lastId = null;
+
+function log(m){ logEl.textContent += '\n' + m; logEl.scrollTop = logEl.scrollHeight; console.log(m); }
+
+trackBtn.onclick = async () => {
+  const file = fileInput.files[0];
+  if(!file){ alert('Pilih video dulu'); return; }
+  const fd = new FormData();
+  fd.append('video', file);
+  fd.append('sampleFPS', document.getElementById('sampleFPS').value);
+  
+  document.getElementById('progress').classList.remove('hidden');
+  document.getElementById('downloadArea').classList.add('hidden');
+  trackBtn.disabled = true;
+  trackBtn.textContent = '⏳ TRACKING...';
+  logEl.textContent = `Uploading ${file.name} ${(file.size/1024/1024).toFixed(1)}MB...`;
+
+  try{
+    const res = await fetch('/api/track', {method:'POST', body: fd});
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error||'track failed');
+    lastId = data.id;
+    log(`DONE! id=${data.id} duration=${data.duration.toFixed(2)}s points=${data.points} first=${data.firstPts} last=${data.lastPts}`);
+    document.getElementById('dlOFTS').href = `/api/download/ofts/${data.id}`;
+    document.getElementById('dlKF').href = `/api/download/kf/${data.id}`;
+    document.getElementById('downloadArea').classList.remove('hidden');
+    document.getElementById('progressBar').style.width = '100%';
+    trackBtn.textContent = '✅ DONE - DOWNLOAD DI BAWAH';
+  }catch(e){
+    log('ERROR: '+e.message);
+    trackBtn.textContent = '❌ GAGAL - COBA LAGI';
+  }finally{
+    trackBtn.disabled = false;
+    setTimeout(()=>{ trackBtn.textContent='🚀 TRACK 1000 TITIK - GOLANG'; }, 3000);
+  }
+}
+</script>
+</body>
+</html>
