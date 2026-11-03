@@ -1,8 +1,7 @@
 name: Build FishTracker
 
 on:
-  push:
-  workflow_dispatch: # biar bisa di pencet manual
+  workflow_dispatch:
 
 jobs:
   build:
@@ -10,17 +9,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Setup Go
+      - name: Setup Go 1.19 biar gak rewel
         uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: '1.19'
 
-      - name: Build binary Linux
+      - name: Fix module jadul + Build
         run: |
-          go mod tidy
+          echo "[*] Fixing malformed module..."
+          sed -i 's|hybridgroup/mjpeg|github.com/hybridgroup/mjpeg|g' go.mod || true
+          sed -i 's|hybridgroup/mjpeg|github.com/hybridgroup/mjpeg|g' go.sum || true
+          
+          go mod edit -replace hybridgroup/mjpeg=github.com/hybridgroup/mjpeg@v0.0.0-20140228234708-4680f1751d08 || true
+          
+          go mod tidy -e
           GOOS=linux GOARCH=amd64 go build -o fishtracker -ldflags="-s -w" .
 
-      - name: Buat Release biar bisa di-wget
+      - name: Release
         uses: softprops/action-gh-release@v2
         with:
           files: fishtracker
