@@ -13,18 +13,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Setup Go 1.19
+
+      - name: Install OpenCV 4
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libopencv-dev libopencv-contrib-dev pkg-config
+          pkg-config --modversion opencv4
+
+      - name: Setup Go 1.21
         uses: actions/setup-go@v5
         with:
-          go-version: '1.19'
+          go-version: '1.21'
+          cache: false
 
-      - name: Fix module jadul + Build
+      - name: Fix & Build
         run: |
-          sed -i 's|hybridgroup/mjpeg|github.com/hybridgroup/mjpeg|g' go.mod || true
-          sed -i 's|hybridgroup/mjpeg|github.com/hybridgroup/mjpeg|g' go.sum || true
+          sed -i 's|hybridgroup/mjpeg|【entity-github¦canonical_name=Github】.com/hybridgroup/mjpeg|g' go.mod || true
           go mod edit -replace hybridgroup/mjpeg=github.com/hybridgroup/mjpeg@v0.0.0-20140228234708-4680f1751d08 || true
-          go mod tidy -e
+          go mod tidy
           GOOS=linux GOARCH=amd64 go build -o fishtracker -ldflags="-s -w" .
 
       - name: Release Latest
