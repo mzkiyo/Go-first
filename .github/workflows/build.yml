@@ -1,7 +1,12 @@
 name: Build FishTracker
 
 on:
+  push:
+    branches: [ "main", "master" ]
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -9,23 +14,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Setup Go 1.19 biar gak rewel
+      - name: Setup Go 1.19
         uses: actions/setup-go@v5
         with:
           go-version: '1.19'
 
       - name: Fix module jadul + Build
         run: |
-          echo "[*] Fixing malformed module..."
           sed -i 's|hybridgroup/mjpeg|github.com/hybridgroup/mjpeg|g' go.mod || true
           sed -i 's|hybridgroup/mjpeg|github.com/hybridgroup/mjpeg|g' go.sum || true
-          
           go mod edit -replace hybridgroup/mjpeg=github.com/hybridgroup/mjpeg@v0.0.0-20140228234708-4680f1751d08 || true
-          
           go mod tidy -e
           GOOS=linux GOARCH=amd64 go build -o fishtracker -ldflags="-s -w" .
 
-      - name: Release
+      - name: Release Latest
         uses: softprops/action-gh-release@v2
         with:
           files: fishtracker
