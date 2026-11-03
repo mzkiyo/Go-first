@@ -67,6 +67,8 @@ func kalmanFilter(data []float64, Q, R float64) []float64 {
 	return out
 }
 
+
+
 func detectGila1000(gray gocv.Mat) []gocv.Point2f {
 	var allPoints []gocv.Point2f
 	cols, rows := 8, 6
